@@ -1,0 +1,240 @@
+[Report:Create Line Report]
+	Form	: Create Line Report
+	Title	: "Line Creation"
+	
+[Form:Create Line Report]
+	Part	: CLR Title, CLR Body
+	Full Height	: No
+	Width	: 30% page
+	Local	: Field:Default:Style:Calibri Default
+	Local	: Field:Default:Local:Style:Default:Height:11
+	On:Form Accept:Yes:Form Accept
+	On:Form Accept:Yes:Call:Create Line Master:#CLRShedName:#CLRRowName:#CLRLineName:#CLRBoxPerLine:#CSRShedGuid
+	Delete	: Space Top
+	Vertical Alignment	: Top
+	Horizontal Alignment	: Left
+	
+[Part:CLR Title]
+	Line	: CLR Title
+	Background	:Cyan Blue
+	
+[Line:CLR Title]
+	Field	: Name Field
+	Local	: Field:Name Field:Set as:"Create Line"
+	Local	: Field:Name Field:Full Width:Yes
+	Local	: Field:Name Field:Align:Centre
+	Local	: Field:Name Field:Local:Style:Default:Height:13
+	Local	: Field:Name Field:Local:Style:Default:Bold:Yes
+	Local	: Field:Name Field:Skip:Yes
+	Local	: Field:Name Field:Color:White
+	Space Bottom	: 0.2
+	Space Top		: 0.2
+	
+[Part:CLR Body]
+	Line	: CLR Shed, CLR Row, CLR Line Name, CLR Box Per Line
+	Space Bottom	: 1
+	Space Left		: 1
+	Space Right		: 1
+	Space Top		: 1
+	
+[Line:CLR Shed]
+	Field	: Short Prompt, CLR Shed Name
+	Local	: Field:Short Prompt:Set as:"Shed Name"
+	Space Bottom	: 0.5
+	
+[Field:CLR Shed Name]
+	Use			: Name Field
+	Border		: Thin Box
+	Full Width	: Yes
+	Table		: List of Extract Shed
+	Show Table	: Always	
+	
+[Line:CLR Row]
+	Field	: Short Prompt, CLR Row Name
+	Local	: Field:Short Prompt:Set as:"Row Name"
+	Space Bottom	: 0.5
+	
+[Field:CLR Row Name]
+	Use			: Name Field
+	Border		: Thin Box
+	Full Width	: Yes
+	Table		: List of Extract Row
+	Show Table	: Always	
+	
+[Line:CLR Line Name]
+	Field	: Short Prompt, CLR Line Name
+	Local	: Field:Short Prompt:Set as:"Line Name"
+	Space Bottom	: 0.5
+	
+[Field:CLR Line Name]
+	Use			: Name Field
+	Border		: Thin Box
+	Full Width	: Yes
+	Validation	: NOT $$IsEmpty:$$Value
+	
+[Line:CLR Box Per Line]
+	Field	: Short Prompt, CLR Box Per Line, CSR Shed Guid
+	Local	: Field:Short Prompt:Set as:"Box Per Line"
+	Space Bottom	: 0.5
+	
+[Field:CLR Box Per Line]
+	Use			: Number Field
+	Border		: Thin Box
+	Full Width	: Yes
+	Validation	: NOT $$IsEmpty:$$Value
+	
+[Field:CLR Line Guid]
+	Use			: Name Field
+	Set as		: $$MakeUniqueID
+	Set Always	: Yes
+	Invisible	: Yes
+
+[Function:Create Line Master]
+Parameter:pShedName:String
+Parameter:pRowName:String
+Parameter:pLineName:String
+Parameter:pBoxPerLine:String
+Parameter:pGuid:String
+Object:Company:$$CurrentCompany
+000: Set Object
+010: Set Target
+020: INSERT COLLECTION OBJECT : CMP Line Master Aggr
+030: Set Value : CMP Line Shed Name : ##pShedName
+040: Set Value : CMP Line Row Name 	: ##pRowName
+050: Set Value : CMP Line Name 		: ##pLineName
+060: Set Value : CMP Line BoxPerLine: ##pBoxPerLine
+070: Set Value : CMP Line Guid 		: ##pGuid
+080: SET TARGET : ..
+090: SET TARGET : ..
+100: Alter Target
+110: Return
+
+
+
+;;; ==================================================== Open Line Alter Report
+[Report:Line List Name]
+	Title	: $$LocaleString:"Select Line"
+	Use     : Collection Variable
+	Local   : Line : Collection Variable : Field : Line Name, Line Guid
+	Local   : Field: MV Title            : Info  : $$LocaleString:"Name of Line"
+	Local	: Field: Line Name			 : Skip Actions	: Yes
+	Local	: Form: Default:On:Form Accept:Yes:Form Accept
+	Local	: Form: Default:On:Form Accept:Yes:Call:OpenLineReport:#LineGuid
+
+[Field:Line Name]
+	Use         : Name Field
+	Table       : List of Extract Line
+	Show Table  : Always
+	CommonTable : No
+
+[Field:Line Guid]
+	Use         : Name Field
+	Set as		: $$Table:LineName:$CMPLineGuid
+	Set Always	: Yes
+	Show Table  : Always
+	CommonTable : No
+	Invisible	: Yes
+
+[Function:OpenLineReport]
+Parameter:Guid:String
+000:Set:LineGuid:##Guid
+010:Do If:##PMInAlterMode:Alter:Display Line Report
+020:Do If:!##PMInAlterMode:Display:Display Line Report
+030:Return
+	
+
+;; =========================================== Display Line Report
+[Report:Display Line Report]
+	Form	: Display Line Report
+	Title	: "Line Creation"
+	
+[Form:Display Line Report]
+	Part	: DLR Title, CLR Body
+	Full Height	: No
+	Width	: 30% page
+	Local	: Field:Default:Style:Calibri Default
+	Local	: Field:Default:Local:Style:Default:Height:11
+	Delete	: Space Top
+	Vertical Alignment	: Top
+	Horizontal Alignment	: Left
+	
+[Part:DLR Title]
+	Line	: DLR Title
+	Background	:Cyan Blue
+	
+[Line:DLR Title]
+	Field	: Name Field
+	Local	: Field:Name Field:Set as:"Display Line"
+	Local	: Field:Name Field:Full Width:Yes
+	Local	: Field:Name Field:Align:Centre
+	Local	: Field:Name Field:Local:Style:Default:Height:13
+	Local	: Field:Name Field:Local:Style:Default:Bold:Yes
+	Local	: Field:Name Field:Skip:Yes
+	Local	: Field:Name Field:Color:White
+	Space Bottom	: 0.2
+	Space Top		: 0.2
+	
+[Part:DLR Body]
+	Line	: DLR Shed, DLR Row, DLR Line Name, DLR Box Per Line
+	Space Bottom	: 1
+	Space Left		: 1
+	Space Right		: 1
+	Space Top		: 1
+	
+[Line:DLR Shed]
+	Field	: Short Prompt, DLR Shed Name
+	Local	: Field:Short Prompt:Set as:"Shed Name"
+	Space Bottom	: 0.5
+	
+[Field:DLR Shed Name]
+	Use			: Name Field
+	Border		: Thin Box
+	Full Width	: Yes
+	Table		: List of Extract Shed
+	Show Table	: Always	
+	Storage		: CMP Line Shed Name
+		
+	
+[Line:DLR Row]
+	Field	: Short Prompt, DLR Row Name
+	Local	: Field:Short Prompt:Set as:"Row Name"
+	Space Bottom	: 0.5
+	
+[Field:DLR Row Name]
+	Use			: Name Field
+	Border		: Thin Box
+	Full Width	: Yes
+	Table		: List of Extract Row
+	Show Table	: Always	
+	Storage		: CMP Line Row Name
+	
+[Line:DLR Line Name]
+	Field	: Short Prompt, DLR Line Name
+	Local	: Field:Short Prompt:Set as:"Line Name"
+	Space Bottom	: 0.5
+	
+[Field:DLR Line Name]
+	Use			: Name Field
+	Border		: Thin Box
+	Full Width	: Yes
+	Validation	: NOT $$IsEmpty:$$Value
+	Storage		: CMP Line Name
+	
+[Line:DLR Box Per Line]
+	Field	: Short Prompt, DLR Box Per Line, DLR Line Guid
+	Local	: Field:Short Prompt:Set as:"Box Per Line"
+	Space Bottom	: 0.5
+	
+[Field:DLR Box Per Line]
+	Use			: Number Field
+	Border		: Thin Box
+	Full Width	: Yes
+	Validation	: NOT $$IsEmpty:$$Value
+	Storage		: CMP Line BoxPerLine
+	
+[Field:DLR Line Guid]
+	Use			: Name Field
+	Set as		: $$MakeUniqueID
+	Set Always	: Yes
+	Invisible	: Yes
+	Storage		: CMP Line Guid

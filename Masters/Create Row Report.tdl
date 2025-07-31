@@ -1,0 +1,183 @@
+[Report:Create Row Report]
+	Form	: Create Row Report
+	Title	: "Row Creation"
+	
+[Form:Create Row Report]
+	Part	: CRR Title, CRR Body
+	Full Height	: No
+	Width	: 30% page
+	Local	: Field:Default:Style:Calibri Default
+	Local	: Field:Default:Local:Style:Default:Height:11
+	On:Form Accept:Yes:Form Accept
+	On:Form Accept:Yes:Call:Create Row Master:#CRRRowName:#CRRUnderShed:#CRRRowGuid
+	Delete	: Space Top
+	Vertical Alignment	: Top
+	Horizontal Alignment	: Left
+	
+[Part:CRR Title]
+	Line	: CRR Title
+	Background	:Cyan Blue
+	
+[Line:CRR Title]
+	Field	: Name Field
+	Local	: Field:Name Field:Set as:"Create Row"
+	Local	: Field:Name Field:Full Width:Yes
+	Local	: Field:Name Field:Align:Centre
+	Local	: Field:Name Field:Local:Style:Default:Height:13
+	Local	: Field:Name Field:Local:Style:Default:Bold:Yes
+	Local	: Field:Name Field:Skip:Yes
+	Local	: Field:Name Field:Color:White
+	Space Bottom	: 0.2
+	Space Top		: 0.2
+	
+[Part:CRR Body]
+	Line	: CRR Row Name, CRR Under Shed
+	Space Bottom	: 1
+	Space Left		: 1
+	Space Right		: 1
+	Space Top		: 1
+	
+[Line:CRR Row Name]
+	Field	: Short Prompt, CRR Row Name
+	Local	: Field:Short Prompt:Set as:"Row Name"
+	Space Bottom	: 0.5
+	
+[Line:CRR Under Shed]
+	Field	: Short Prompt, CRR Under Shed, CSR Shed Guid
+	Local	: Field:Short Prompt:Set as:"Under Shed"
+	
+[Field:CRR Row Name]
+	Use			: Name Field
+	Border		: Thin Box
+	Full Width	: Yes
+	Validation	: NOT $$IsEmpty:$$Value
+	
+[Field:CRR Under Shed]
+	Use			: Name Field
+	Border		: Thin Box
+	Full Width	: Yes
+	Table		: List of Extract Shed
+	Show Table	: Always
+	
+[Field:CRR Row Guid]
+	Use			: Name Field
+	Set as		: $$MakeUniqueID
+	Set Always	: Yes
+	Invisible	: Yes
+
+[Function:Create Row Master]
+Parameter:pName:String
+Parameter:pUnder:String
+Parameter:pGuid:String
+Object:Company:$$CurrentCompany
+000: Set Object
+010: Set Target
+020: INSERT COLLECTION OBJECT : CMP Row Master Aggr
+030: Set Value : CMP Row Name 	: ##pName
+040: Set Value : CMP Under Shed : ##pUnder
+050: Set Value : CMP Row Guid 	: ##pGuid
+190: SET TARGET : ..
+200: SET TARGET : ..
+210: Alter Target
+220: Return
+
+
+
+;;; ==================================================== Open Row Alter Report
+[Report:Row List Name]
+	Title	: $$LocaleString:"Select Row"
+	Use     : Collection Variable
+	Local   : Line : Collection Variable : Field : Row Name, Row Guid
+	Local   : Field: MV Title            : Info  : $$LocaleString:"Name of Row"
+	Local	: Field: Row Name			 : Skip Actions	: Yes
+	Local	: Form: Default:On:Form Accept:Yes:Form Accept
+	Local	: Form: Default:On:Form Accept:Yes:Call:OpenRowReport:#RowGuid
+
+[Field:Row Name]
+	Use         : Name Field
+	Table       : List of Extract Row
+	Show Table  : Always
+	CommonTable : No
+
+[Field:Row Guid]
+	Use         : Name Field
+	Set as		: $$Table:RowName:$CMPRowGuid
+	Set Always	: Yes
+	Show Table  : Always
+	CommonTable : No
+	Invisible	: Yes
+
+[Function:OpenRowReport]
+Parameter:Guid:String
+000:Set:RowGuid:##Guid
+010:Do If:##PMInAlterMode:Alter:Display Row Report
+020:Do If:!##PMInAlterMode:Display:Display Row Report
+030:Return
+	
+
+;; =========================================== Display Row Report
+[Report:Display Row Report]
+	Form	: Display Row Report
+	Title	: "Display Row"
+	
+[Form:Display Row Report]
+	Part	: DRR Title, DRR Body
+	Full Height	: No
+	Width	: 30% page
+	Local	: Field:Default:Style:Calibri Default
+	Local	: Field:Default:Local:Style:Default:Height:11
+	Delete	: Space Top
+	Vertical Alignment	: Top
+	Horizontal Alignment	: Left
+	
+[Part:DRR Title]
+	Line	: DRR Title
+	Background	:Cyan Blue
+	
+[Line:DRR Title]
+	Field	: Name Field
+	Local	: Field:Name Field:Set as:"Create Row"
+	Local	: Field:Name Field:Full Width:Yes
+	Local	: Field:Name Field:Align:Centre
+	Local	: Field:Name Field:Local:Style:Default:Height:13
+	Local	: Field:Name Field:Local:Style:Default:Bold:Yes
+	Local	: Field:Name Field:Skip:Yes
+	Local	: Field:Name Field:Color:White
+	Space Bottom	: 0.2
+	Space Top		: 0.2
+	
+[Part:DRR Body]
+	Line	: DRR Body
+	Space Bottom	: 1
+	Space Left		: 1
+	Space Right		: 1
+	Space Top		: 1
+	ObjectEx		: (Company. $$CurrentCompany).CMP Row Master Aggr[1, @@IsSameRowGuid]
+
+[Line:DRR Body]
+	Field	: Short Prompt, DRR Row Name, DRR Under Shed, DRR Row Guid
+	Local	: Field:Short Prompt:Set as:"Shed Name"
+	
+[Field:DRR Row Name]
+	Use			: Name Field
+	Border		: Thin Box
+	Full Width	: Yes
+	Validation	: NOT $$IsEmpty:$$Value
+	Storage		: CMP Row Name
+	
+[Field:DRR Under Shed]
+	Use			: Name Field
+	Border		: Thin Box
+	Full Width	: Yes
+	Table		: List of Extract Shed
+	Storage		: CMP Under Shed
+	
+[Field:DRR Row Guid]
+	Use			: Name Field
+	Set as		: $$MakeUniqueID
+	Set Always	: Yes
+	Invisible	: Yes
+	Storage		: CMP Row Guid
+
+
+

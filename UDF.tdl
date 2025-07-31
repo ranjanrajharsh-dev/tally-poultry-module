@@ -1,0 +1,16 @@
+[System:UDF]
+	CMP Shed Master Aggr	: Aggregate	: 6800
+	CMP Shed Name			: String	: 6801
+	CMP Shed Guid			: String	: 6802
+	
+	CMP Row Master Aggr		: Aggregate	: 6810
+	CMP Row Name			: String	: 6811
+	CMP Under Shed			: String	: 6812
+	CMP Row Guid			: String	: 6813
+	
+	CMP Line Master Aggr	: Aggregate	: 6820
+	CMP Line Shed Name		: String	: 6821
+	CMP Line Row Name		: String	: 6822
+	CMP Line Name			: String	: 6823
+	CMP Line BoxPerLine		: String	: 6824
+	CMP Line Guid			: String	: 6825

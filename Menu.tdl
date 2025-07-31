@@ -1,0 +1,96 @@
+[#Menu:Gateway of Tally]
+	Add:Key Item:After:@@locIndentUtilities:"Poultry Module":P:Menu:Poultry Module
+	
+[Menu:Poultry Module]
+	Title		: "Poultry Module"
+	Indent		: "Poultry Module"
+	
+	Key Item	: "1: Master"			:1:Menu:PM Master
+	Indent		: Blank
+	
+;	Key Item	: "2: Transaction"		:2:Menu:PM Transaction
+;	Indent		: Blank
+;	
+;	Key Item	: "3: Reports"			:3:Menu:PM Reports
+;	Indent		: Blank
+;	
+;	Key Item	: "4: Objects"			:4:Menu:PM Objects
+;	Indent		: Blank
+;	
+;;; Masters
+[Menu:PM Master]
+	Title		: "Master"
+	Indent		: "Master"	
+	
+	Key Item	: "1. Shed"				:1:Menu:Shed Master Menu
+	Indent		: Blank
+	
+	Key Item	: "2. Row"				:2:Menu:Row Master Menu
+	Indent		: Blank
+	
+	Key Item	: "3. Line"				:3:Menu:Line Master Menu
+	Indent		: Blank
+	
+	Key Item	: "4. Bird"				:4:Alter:Bird Report
+	Indent		: Blank
+	
+	Key Item	: "5. Feed"				:5:Alter:Feed Report
+	Indent		: Blank
+	
+	Key Item	: "6. Feed BOM"			:6:Alter:Feed BOM Report
+	Indent		: Blank
+	
+	Key Item	: "7. Egg"				:7:Alter:Egg Report
+	Indent		: Blank
+	
+	Key Item	: "8. Medicine"			:8:Alter:Medicine Report
+	Indent		: Blank
+	
+	Key Item	: "9. Misc"				:9:Alter:Misc Report
+	Indent		: Blank
+	
+	Key Item	: "10. Bag Type"		:10:Alter:Bag Type Report
+	Indent		: Blank
+	
+	Key Item	: "11. Egg Tray Type"	:11:Alter:Egg Tray Type Report
+	Indent		: Blank
+	
+	Key Item	: "12. Supplier"		:12:Alter:Supplier Report
+	Indent		: Blank
+	
+	Key Item	: "13. Customer"		:13:Alter:Customer Report
+	Indent		: Blank
+	
+	Key Item	: "14. Broker"			:14:Alter:Broker Report
+	Indent		: Blank
+	
+
+[Menu:Shed Master Menu]
+	Title		:"Shed Master"
+	Indent		:Blank
+	
+	Key Item	:"Create"				:C:Alter:Create Shed Report
+	Indent		:Blank
+	
+	Key Item	:"Alter"				:A:Call:Alter Shed Report
+	Indent		:Blank
+	
+[Menu:Row Master Menu]
+	Title		:"Row Master"
+	Indent		:Blank
+	
+	Key Item	:"Create"				:C:Alter:Create Row Report
+	Indent		:Blank
+	
+	Key Item	:"Alter"				:A:Call:Alter Row Report
+	Indent		:Blank
+	
+[Menu:Line Master Menu]
+	Title		:"Row Master"
+	Indent		:Blank
+	
+	Key Item	:"Create"				:C:Alter:Create Line Report
+	Indent		:Blank
+	
+	Key Item	:"Alter"				:A:Call:Alter Line Report
+	Indent		:Blank

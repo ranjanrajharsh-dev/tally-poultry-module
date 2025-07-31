@@ -1,0 +1,163 @@
+[Report:Create Shed Report]
+	Form	: Create Shed Report
+	Title	: "Shed Creation"
+	
+[Form:Create Shed Report]
+	Part	: CSR Title, CSR Body
+	Full Height	: No
+	Width	: 30% page
+	Local	: Field:Default:Style:Calibri Default
+	Local	: Field:Default:Local:Style:Default:Height:11
+	On:Form Accept:Yes:Form Accept
+	On:Form Accept:Yes:Call:Create Shed Master:#CSRShedName:#CSRShedGuid
+	Delete	: Space Top
+	Vertical Alignment	: Top
+	Horizontal Alignment	: Left
+	
+[Part:CSR Title]
+	Line	: CSR Title
+	Background	:Cyan Blue
+	
+[Line:CSR Title]
+	Field	: Name Field
+	Local	: Field:Name Field:Set as:"CREATE SHED"
+	Local	: Field:Name Field:Full Width:Yes
+	Local	: Field:Name Field:Align:Centre
+	Local	: Field:Name Field:Local:Style:Default:Height:13
+	Local	: Field:Name Field:Local:Style:Default:Bold:Yes
+	Local	: Field:Name Field:Skip:Yes
+	Local	: Field:Name Field:Color:White
+	Space Bottom	: 0.2
+	Space Top		: 0.2
+	
+[Part:CSR Body]
+	Line	: CSR Body
+	Space Bottom	: 1
+	Space Left		: 1
+	Space Right		: 1
+	Space Top		: 1
+	
+[Line:CSR Body]
+	Field	: Short Prompt, CSR Shed Name, CSR Shed Guid
+	Local	: Field:Short Prompt:Set as:"Shed Name"
+	
+[Field:CSR Shed Name]
+	Use			: Name Field
+	Border		: Thin Box
+	Full Width	: Yes
+	Validation	: NOT $$IsEmpty:$$Value
+	
+[Field:CSR Shed Guid]
+	Use			: Name Field
+	Set as		: $$MakeUniqueID
+	Set Always	: Yes
+	Invisible	: Yes
+
+[Function:Create Shed Master]
+Parameter:pName:String
+Parameter:pGuid:String
+Object:Company:$$CurrentCompany
+000: Set Object
+010: Set Target
+020: INSERT COLLECTION OBJECT : CMP Shed Master Aggr
+030: Set Value : CMP Shed Name : ##pName
+031: Log:##pGuid
+040: Set Value : CMP Shed Guid : ##pGuid
+190: SET TARGET : ..
+200: SET TARGET : ..
+210: Alter Target
+220: Return
+
+
+
+;;; ==================================================== Open Shed Alter Report
+[Report:Shed List Name]
+	Title	: $$LocaleString:"Select Shed"
+	Use     : Collection Variable
+	Local   : Line : Collection Variable : Field : Shed Name, Shed Guid
+	Local   : Field: MV Title            : Info  : $$LocaleString:"Name of Shed"
+	Local	: Field: Shed Name			 : Skip Actions	: Yes
+	Local	: Form: Default:On:Form Accept:Yes:Form Accept
+	Local	: Form: Default:On:Form Accept:Yes:Call:OpenShedReport:#ShedGuid
+
+[Field:Shed Name]
+	Use         : Name Field
+	Table       : List of Extract Shed
+	Show Table  : Always
+	CommonTable : No
+
+[Field:Shed Guid]
+	Use         : Name Field
+	Set as		: $$Table:ShedName:$CMPShedGuid
+	Set Always	: Yes
+	Show Table  : Always
+	CommonTable : No
+	Invisible	: Yes
+
+[Function:OpenShedReport]
+Parameter:Guid:String
+000:Set:ShedGuid:##Guid
+001:Log:##ShedGuid
+010:Do If:##PMInAlterMode:Alter:Display Shed Report
+020:Do If:!##PMInAlterMode:Display:Display Shed Report
+030:Return
+
+
+;; ================================================ Display Shed Report
+[Report:Display Shed Report]
+	Form	: Display Shed Report
+	Title	: "Display Shed"
+	
+[Form:Display Shed Report]
+	Part	: DSR Title, DSR Body
+	Full Height	: No
+	Width	: 30% page
+	Local	: Field:Default:Style:Calibri Default
+	Local	: Field:Default:Local:Style:Default:Height:11
+	Delete	: Space Top
+	Vertical Alignment	: Top
+	Horizontal Alignment	: Left
+	
+[Part:DSR Title]
+	Line	: DSR Title
+	Background	: Cyan Blue
+	
+[Line:DSR Title]
+	Field	: Name Field
+	Local	: Field:Name Field:Set as:"Create Shed"
+	Local	: Field:Name Field:Full Width:Yes
+	Local	: Field:Name Field:Align:Centre
+	Local	: Field:Name Field:Local:Style:Default:Height:13
+	Local	: Field:Name Field:Local:Style:Default:Bold:Yes
+	Local	: Field:Name Field:Skip:Yes
+	Local	: Field:Name Field:Color:White
+	Space Bottom	: 0.2
+	Space Top		: 0.2
+	
+[Part:DSR Body]
+	Line			: CSR Body
+	Space Bottom	: 1
+	Space Left		: 1
+	Space Right		: 1
+	Space Top		: 1
+	ObjectEx		: (Company, $$CurrentCompany).CMPShedMasterAggr[1, @@IsSameShedGuid]
+	
+[Line:DSR Body]
+	Field	: Short Prompt, DSR Shed Name, DSR Shed Guid
+	Local	: Field:Short Prompt:Set as:"Shed Name"
+	
+[Field:DSR Shed Name]
+	Use			: Name Field
+	Border		: Thin Box
+	Full Width	: Yes
+	Validation	: NOT $$IsEmpty:$$Value
+	Storage		: CMP Shed Name
+	Set as		: $CMPShedName
+	
+[Field:DSR Shed Guid]
+	Use			: Name Field
+	Set as		: $$MakeUniqueID
+	Set Always	: Yes
+	Storage		: CMP Shed Guid
+	Invisible	: Yes
+	

@@ -1,0 +1,24 @@
+[Collection:List of Extract Shed]
+Type:CMP Shed Master Aggr:Company
+Child Of:$$CurrentCompany
+Fetch:CMP Shed Name, CMPShedGuid
+Title:"List of Shed"
+Format:$CMPShedName, 25
+Format:$CMPShedGuid, 25
+
+[Collection:List of Extract Row]
+Type:CMP Row Master Aggr:Company
+Child Of:$$CurrentCompany
+Fetch:CMP Row Name, CMP Row Guid
+Title:"List of Row"
+Format:$CMPRowName, 25
+Format:$CMPRowGuid, 25
+Format:$CMPUnderShed, 25
+
+[Collection:List of Extract Line]
+Type:CMP Line Master Aggr:Company
+Child Of:$$CurrentCompany
+Fetch:CMP Line Name, CMP Line Guid
+Title:"List of Row"
+Format:$CMPLineName, 25
+Format:$CMPLineGuid, 25

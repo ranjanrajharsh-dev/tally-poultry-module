@@ -1,0 +1,14 @@
+[Function:Alter Shed Report]
+000:Set:PMInAlterMode:Yes
+010:Alter:Shed List Name
+020:Return
+
+[Function:Alter Row Report]
+000:Set:PMInAlterMode:Yes
+010:Alter:Row List Name
+020:Return
+
+[Function:Alter Line Report]
+000:Set:PMInAlterMode:Yes
+010:Alter:Line List Name
+020:Return

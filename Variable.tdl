@@ -1,0 +1,17 @@
+[Variable:PMInAlterMode]
+Type:Logical
+
+[Variable:ShedGuid]
+Type:String
+
+[Variable:RowGuid]
+Type:String
+
+[Variable:LineGuid]
+Type:String
+
+[System:Variable]
+PMInAlterMode:""
+ShedGuid:""
+RowGuid:""
+LineGuid:""
